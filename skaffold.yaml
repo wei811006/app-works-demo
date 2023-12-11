@@ -1,0 +1,32 @@
+apiVersion: skaffold/v4beta4
+kind: Config
+
+build:
+  artifacts:
+    - image: localhost/app-works-demo
+      docker:
+        dockerfile: Dockerfile
+
+deploy:
+  helm:
+    releases:
+      - name: app-works-demo
+        namespace: default
+        chartPath: deploy/helm/maistock
+        useHelmSecrets: true
+        valuesFiles:
+          - deploy/helm/maistock/values.yaml
+          - deploy/helm/maistock/configs/local/secrets.yaml
+          - deploy/helm/maistock/configs/local/values.yaml
+        setValueTemplates:
+          main.image.repository: "{{.IMAGE_REPO_localhost_trade_api}}"
+          main.image.tag: "{{.IMAGE_TAG_localhost_trade_api}}@{{.IMAGE_DIGEST_localhost_trade_api}}"
+          worker.image.repository: "{{.IMAGE_REPO_localhost_trade_worker}}"
+          worker.image.tag: "{{.IMAGE_TAG_localhost_trade_worker}}@{{.IMAGE_DIGEST_localhost_trade_worker}}"
+
+profiles:
+  # Local cluster - we build and deploy things locally
+  - name: local
+    build:
+      local:
+        push: false

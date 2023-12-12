@@ -2,6 +2,7 @@ package com.appworkschool.springbootdemo;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -12,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class DefaultController {
 
     @Autowired
-    StringRedisTemplate stringRedisTemplate;
+    RedisTemplate redisTemplate;
 
     @Autowired
     TestDataRepository testDataRepository;
@@ -20,12 +21,12 @@ public class DefaultController {
     @GetMapping("/test")
     public String index() {
         log.info("get test");
-        Object cacheData = stringRedisTemplate.opsForHash().get("test", "test");
+        Object cacheData = redisTemplate.opsForHash().get("testData", "test");
         if (cacheData != null) {
             return ((TestData)cacheData).toString();
         } else {
             TestData testData = testDataRepository.getReferenceById(1L);
-            stringRedisTemplate.opsForHash().putIfAbsent("test", "test", testData);
+            redisTemplate.opsForHash().put("testData", "test", testData);
             return testData.toString();
         }
     }

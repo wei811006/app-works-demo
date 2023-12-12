@@ -11,10 +11,12 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 import org.springframework.data.redis.core.RedisHash;
 
+import java.io.Serializable;
+
 @Entity
 @NoArgsConstructor
 @ToString
-public class TestData {
+public class TestData implements Serializable {
 
     public TestData(String name, String email) {
         this.name = name;

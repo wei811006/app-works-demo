@@ -1,11 +1,13 @@
 package com.appworkschool.springbootdemo;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+@Slf4j
 @RestController
 public class DefaultController {
 
@@ -15,8 +17,9 @@ public class DefaultController {
     @Autowired
     TestDataRepository testDataRepository;
 
-    @GetMapping("/")
+    @GetMapping("/test")
     public String index() {
+        log.info("get test");
         Object cacheData = stringRedisTemplate.opsForHash().get("test", "test");
         if (cacheData != null) {
             return ((TestData)cacheData).toString();
@@ -29,6 +32,7 @@ public class DefaultController {
 
     @PostMapping("/test")
     public void test() {
+        log.info("post test");
         testDataRepository.save(new TestData("test", "test"));
     }
 }

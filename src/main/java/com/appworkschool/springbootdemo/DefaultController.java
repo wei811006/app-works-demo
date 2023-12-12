@@ -4,6 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.StringRedisTemplate;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -21,12 +22,12 @@ public class DefaultController {
     @GetMapping("/test")
     public String index() {
         log.info("get test");
-        Object cacheData = redisTemplate.opsForHash().get("testData", "test");
+        Object cacheData = redisTemplate.opsForValue().get("testData");
         if (cacheData != null) {
             return ((TestData)cacheData).toString();
         } else {
             TestData testData = testDataRepository.getReferenceById(1L);
-            redisTemplate.opsForHash().put("testData", "test", testData);
+            redisTemplate.opsForValue().set("testData", testData);
             return testData.toString();
         }
     }
@@ -35,5 +36,11 @@ public class DefaultController {
     public void test() {
         log.info("post test");
         testDataRepository.save(new TestData("test", "test"));
+    }
+
+    @DeleteMapping("/test")
+    public void delete() {
+        log.info("delete test");
+        redisTemplate.delete("testData");
     }
 }

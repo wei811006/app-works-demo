@@ -32,4 +32,4 @@ jobs:
         arguments: "bootBuildImage --imageName=vloude0605/app-works-demo:${{ github.sha }}"
 
     - name: Push Docker Image to Docker Hub
-      run: docker push vloude0605/spring-boot-demo:${{ github.sha }}
+      run: docker push vloude0605/app-works-demo:${{ github.sha }}

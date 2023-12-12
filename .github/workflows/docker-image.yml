@@ -19,24 +19,17 @@ jobs:
       with:
         username: ${{ secrets.DOCKER_USERNAME }}
         password: ${{ secrets.DOCKER_PASSWORD }}
+
     - name: Set up JDK 11
       uses: actions/setup-java@v3
       with:
         java-version: '17'
         distribution: 'adopt'
+        
     - name: Build with Gradle
       uses: gradle/gradle-build-action@bd5760595778326ba7f1441bcf7e88b49de61a25 # v2.6.0
       with:
         arguments: "bootBuildImage --imageName=vloude0605/spring-boot-demo:${{ github.sha }}"
-      
-    - name: Build and push Docker image
-      uses: docker/build-push-action@3b5e8027fcad23fda98b2e3ac259d8d67585f671
-      with:
-        context: .
-        file: ./Dockerfile
-        push: true
-        tags: ${{ github.sha }}
-        labels: ${{ steps.meta.outputs.labels }}
 
     - name: Push Docker Image to Docker Hub
       run: docker push vloude0605/spring-boot-demo:${{ github.sha }}

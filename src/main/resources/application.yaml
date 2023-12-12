@@ -9,12 +9,6 @@ spring:
       host: app-works-demo-redis-master
       port: 6379
       timeout: 10000
-      lettuce:
-        pool:
-        max-active: 8
-        max-idle: 8
-        max-wait: -1ms
-        min-idle: 0
     jpa:
       hibernate:
          ddl-auto: update

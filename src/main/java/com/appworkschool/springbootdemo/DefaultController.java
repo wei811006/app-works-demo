@@ -22,9 +22,9 @@ public class DefaultController {
     @GetMapping("/test")
     public String index() {
         log.info("get test");
-        Object cacheData = redisTemplate.opsForValue().get("testData");
+        TestData cacheData = (TestData) redisTemplate.opsForValue().get("testData");
         if (cacheData != null) {
-            return ((TestData)cacheData).toString();
+            return cacheData.toString();
         } else {
             TestData testData = testDataRepository.getReferenceById(1L);
             redisTemplate.opsForValue().set("testData", testData);

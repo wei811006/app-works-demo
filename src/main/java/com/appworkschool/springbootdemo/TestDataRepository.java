@@ -5,4 +5,7 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface TestDataRepository extends JpaRepository<TestData, Long> {
+
+    TestData findByName(String name);
+
 }

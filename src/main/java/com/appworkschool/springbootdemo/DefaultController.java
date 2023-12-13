@@ -33,7 +33,7 @@ public class DefaultController {
             TestData cacheData = gson.fromJson(redisTemplate.opsForValue().get("testData"), TestData.class);
             return cacheData.toString();
         } else {
-            TestData testData = testDataRepository.getReferenceById(1L);
+            TestData testData = testDataRepository.findByName("test");
             redisTemplate.opsForValue().set("testData", gson.toJson(testData));
             return testData.toString();
         }

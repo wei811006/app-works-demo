@@ -1,6 +1,8 @@
 server:
   port: 8080
 spring:
+  application:
+    name: app-works-demo
   datasource:
     url: jdbc:mysql://app-works-demo-mysql:3306/appworks?useSSL=false&useUnicode=true&characterEncoding=UTF-8&serverTimezone=UTC
     username: appworks
@@ -15,3 +17,14 @@ spring:
     hibernate:
       ddl-auto: update
     show-sql: true
+
+management:
+  endpoint:
+    metrics:
+      enabled: true
+    prometheus:
+      enabled: true
+  endpoints:
+    web:
+      exposure:
+        include: [ "prometheus","health" ]

@@ -50,4 +50,10 @@ public class DefaultController {
         log.info("delete test");
         redisTemplate.delete("testData");
     }
+
+    @GetMapping("/error")
+    public void error() {
+        log.info("error test");
+        throw new RuntimeException("error test");
+    }
 }

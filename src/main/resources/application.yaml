@@ -8,11 +8,11 @@ spring:
     username: appworks
     password: appworks
     driver-class-name: com.mysql.cj.jdbc.Driver
-  data:
-    redis:
-      host: app-works-demo-redis-master
-      port: 6379
-      timeout: 10000
+#  data:
+#    redis:
+#      host: app-works-demo-redis-master
+#      port: 6379
+#      timeout: 10000
   jpa:
     hibernate:
       ddl-auto: update

@@ -8,7 +8,7 @@ image:
   repository: vloude0605/app-works-demo
   pullPolicy: IfNotPresent
   # Overrides the image tag whose default is the chart appVersion.
-  tag: "master"
+  tag: "d2dba7df557ddf55f24fee5bc3fa26c09b40fa84"
 
 imagePullSecrets: []
 nameOverride: ""
@@ -23,8 +23,8 @@ serviceAccount:
   # If not set and create is true, a name is generated using the fullname template
   name: ""
 
-podAnnotations:
-  sidecar.opentelemetry.io/inject: "true"
+podAnnotations: {}
+#  sidecar.opentelemetry.io/inject: "true"
 
 podSecurityContext: {}
   # fsGroup: 2000
@@ -62,12 +62,12 @@ resources: {}
   # choice for the user. This also increases chances charts run on environments with little
   # resources, such as Minikube. If you do want to specify resources, uncomment the following
   # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
-  # limits:
-  #   cpu: 100m
-  #   memory: 128Mi
-  # requests:
-  #   cpu: 100m
-  #   memory: 128Mi
+#   limits:
+#     cpu: 300m
+#     memory: 2Gi
+#   requests:
+#     cpu: 300m
+#     memory: 2Gi
 
 autoscaling:
   enabled: false
@@ -89,7 +89,3 @@ mysql:
     username: appworks
     password: appworks
     database: appworks
-
-redis:
-  auth:
-    enabled: false

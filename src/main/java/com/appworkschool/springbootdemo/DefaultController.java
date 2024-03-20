@@ -4,17 +4,15 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.google.gson.Gson;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.Random;
 
 @Slf4j
 @RestController
 public class DefaultController {
-
-//    @Autowired
-//    StringRedisTemplate redisTemplate;
 
     @Autowired
     TestDataRepository testDataRepository;
@@ -26,14 +24,8 @@ public class DefaultController {
 
         Gson gson = new Gson();
 
-//        if (redisTemplate.hasKey("testData")) {
-//            TestData cacheData = gson.fromJson(redisTemplate.opsForValue().get("testData"), TestData.class);
-//            return cacheData.toString();
-//        } else {
-            TestData testData = testDataRepository.findFirstByName("test");
-//            redisTemplate.opsForValue().set("testData", gson.toJson(testData));
-            return testData.toString();
-//        }
+        TestData testData = testDataRepository.findFirstByName("test");
+        return testData.toString();
     }
 
     @PostMapping("/test")
@@ -42,15 +34,50 @@ public class DefaultController {
         testDataRepository.save(new TestData("test", "test"));
     }
 
-    @DeleteMapping("/test")
-    public void delete() {
-        log.info("delete test");
-//        redisTemplate.delete("testData");
+    @GetMapping("/random-delay/{ms}")
+    public String getRandomDelayedResponse(@PathVariable("ms") int ms) {
+        try {
+            // 随机生成延迟时间在 300ms 到 800ms 之间
+            int delay = new Random().nextInt(ms) + 200;
+            Thread.sleep(delay);
+            return "Response delayed by " + delay + " milliseconds";
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+            return "Error occurred while delaying response";
+        }
     }
 
-    @GetMapping("/error")
-    public void error() {
-        log.info("error test");
-        throw new RuntimeException("error test");
+    @GetMapping("/cpu/{cnt}")
+    public String cpu(@PathVariable("cnt") int cnt) {
+        fibonacci(cnt); // 计算斐波那契数列以增加 CPU 负载
+        return "CPU spike simulated!";
+    }
+
+    @GetMapping("/memory")
+    public String memory() {
+        return "Memory spike simulated!";
+    }
+
+    @GetMapping("/status/{rate}")
+    public ResponseEntity<String> status(@PathVariable("rate") int rate) {
+        System.out.println("/status -> " + rate);
+        // 生成一个介于0到99之间的随机数
+        int randomNumber = new Random().nextInt(100);
+        // 如果随机数小于等于20，返回500错误
+        if (randomNumber <= rate) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Internal Server Error");
+        }
+        // 否则返回成功响应
+        return ResponseEntity.ok("Success");
+    }
+
+    // 计算斐波那契数列
+    private long fibonacci(int n) {
+        System.out.println(n);
+        if (n <= 1) {
+            return n;
+        } else {
+            return fibonacci(n - 1) + fibonacci(n - 2);
+        }
     }
 }

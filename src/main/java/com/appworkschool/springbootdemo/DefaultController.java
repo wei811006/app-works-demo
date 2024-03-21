@@ -36,7 +36,9 @@ public class DefaultController {
 
     @GetMapping("/m5-part3")
     public String m5Part3() {
-        return "Test";
+        long bytesToAllocate = 100 * 1024L * 1024L; // Convert MB to bytes
+        byte[] memoryToConsume = new byte[(int) bytesToAllocate];
+        return "Consumed " + 100 * 1024L * 1024L + "MB of memory";
     }
 
     @GetMapping("/random-delay/{ms}")

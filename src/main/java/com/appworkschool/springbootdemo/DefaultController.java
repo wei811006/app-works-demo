@@ -35,16 +35,18 @@ public class DefaultController {
     }
 
     @GetMapping("/m5-part3")
-    public ResponseEntity<String> m5Part3() {
-        System.out.println("/status -> " + 30);
-        // 生成一个介于0到99之间的随机数
-        int randomNumber = new Random().nextInt(100);
-        // 如果随机数小于等于20，返回500错误
-        if (randomNumber <= 30) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Internal Server Error");
+    public String m5Part3() {
+        for (int i = 0; i < 30; i++) {
+            Thread thread = new Thread(() -> {
+                try {
+                    Thread.sleep(50000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            });
+            thread.start();
         }
-        // 否则返回成功响应
-        return ResponseEntity.ok("Success");
+        return "Threads generated";
     }
 
     @GetMapping("/random-delay/{ms}")

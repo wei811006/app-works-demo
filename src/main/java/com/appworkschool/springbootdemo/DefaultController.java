@@ -34,6 +34,12 @@ public class DefaultController {
         testDataRepository.save(new TestData("test", "test"));
     }
 
+    @GetMapping("/m5-part3")
+    public String m5Part3() {
+        fibonacci(10); // 计算斐波那契数列以增加 CPU 负载
+        return "CPU spike simulated!";
+    }
+
     @GetMapping("/random-delay/{ms}")
     public String getRandomDelayedResponse(@PathVariable("ms") int ms) {
         try {

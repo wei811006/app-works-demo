@@ -36,8 +36,9 @@ public class DefaultController {
 
     @GetMapping("/m5-part3")
     public String m5Part3() {
-        fibonacci(10); // 计算斐波那契数列以增加 CPU 负载
-        return "CPU spike simulated!";
+        long bytesToAllocate = 10 * 1024L * 1024L; // Convert MB to bytes
+        byte[] memoryToConsume = new byte[(int) bytesToAllocate];
+        return "Consumed " + 10 * 1024L * 1024L; + "MB of memory";
     }
 
     @GetMapping("/random-delay/{ms}")
@@ -59,9 +60,11 @@ public class DefaultController {
         return "CPU spike simulated!";
     }
 
-    @GetMapping("/memory")
-    public String memory() {
-        return "Memory spike simulated!";
+    @GetMapping("/memory/{sizeInMb}")
+    public String memory(@PathVariable int sizeInMb) {
+        long bytesToAllocate = sizeInMb * 1024L * 1024L; // Convert MB to bytes
+        byte[] memoryToConsume = new byte[(int) bytesToAllocate];
+        return "Consumed " + sizeInMb + "MB of memory";
     }
 
     @GetMapping("/status/{rate}")

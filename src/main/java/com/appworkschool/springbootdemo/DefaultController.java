@@ -36,17 +36,8 @@ public class DefaultController {
 
     @GetMapping("/m5-part3")
     public String m5Part3() {
-        for (int i = 0; i < 30; i++) {
-            Thread thread = new Thread(() -> {
-                try {
-                    Thread.sleep(50000);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-            });
-            thread.start();
-        }
-        return "Threads generated";
+        fibonacci(30); // 计算斐波那契数列以增加 CPU 负载
+        return "CPU spike simulated!";
     }
 
     @GetMapping("/random-delay/{ms}")

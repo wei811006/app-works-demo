@@ -36,8 +36,7 @@ public class DefaultController {
 
     @GetMapping("/m5-part3")
     public String m5Part3() {
-        fibonacci(30); // 计算斐波那契数列以增加 CPU 负载
-        return "CPU spike simulated!";
+        return "Test";
     }
 
     @GetMapping("/random-delay/{ms}")

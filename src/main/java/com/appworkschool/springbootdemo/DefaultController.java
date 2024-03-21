@@ -36,9 +36,16 @@ public class DefaultController {
 
     @GetMapping("/m5-part3")
     public String m5Part3() {
-        long bytesToAllocate = 10 * 1024L * 1024L; // Convert MB to bytes
-        byte[] memoryToConsume = new byte[(int) bytesToAllocate];
-        return "Consumed " + 10 * 1024L * 1024L + "MB of memory";
+        int ms = 1000;
+        try {
+            // 随机生成延迟时间在 300ms 到 800ms 之间
+            int delay = new Random().nextInt(ms) + 300;
+            Thread.sleep(delay);
+            return "Response delayed by " + delay + " milliseconds";
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+            return "Error occurred while delaying response";
+        }
     }
 
     @GetMapping("/random-delay/{ms}")
